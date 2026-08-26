@@ -147,7 +147,7 @@ p { margin: 0 0 1em; }
 }
 .logo .co { color: var(--silver); font-weight: 700; }
 .nav-links { display: flex; align-items: center; gap: 26px; }
-.nav-links a {
+.nav-links a:not(.btn) {
   font-size: 13px;
   font-weight: 500;
   letter-spacing: 0.14em;
@@ -156,7 +156,7 @@ p { margin: 0 0 1em; }
   color: var(--silver);
   transition: color 0.2s ease;
 }
-.nav-links a:hover, .nav-links a[aria-current="page"] { color: var(--white); }
+.nav-links a:not(.btn):hover, .nav-links a:not(.btn)[aria-current="page"] { color: var(--white); }
 
 .nav-toggle {
   display: none;
