@@ -187,12 +187,18 @@ p { margin: 0 0 1em; }
 }
 .btn:active { transform: translateY(1px); }
 .btn-chrome {
-  background: var(--grad-chrome);
-  background-size: 160% 100%;
-  color: var(--black);
-  border-color: var(--chrome-hi);
+  background: linear-gradient(180deg,
+      #f8f9fb 0%,
+      #e3e5ea 42%,
+      #a6aab2 50%,
+      #ced1d7 58%,
+      #f1f2f5 100%);
+  color: #0b0b0c;
+  font-weight: 700;
+  border-color: #9ba0a8;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.85), inset 0 -1px 0 rgba(0,0,0,0.18);
 }
-.btn-chrome:hover { background-position: 80% 0; }
+.btn-chrome:hover { filter: brightness(1.06); }
 .btn-ink { background: var(--ink); color: var(--white); }
 .btn-ink:hover { opacity: 0.86; }
 .btn-ghost-dark { border-color: var(--line-dark); color: var(--white); }
