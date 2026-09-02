@@ -508,3 +508,78 @@ p { margin: 0 0 1em; }
   .reveal { opacity: 1; transform: none; transition: none; }
   .btn, .nav-links { transition: none; }
 }
+
+/* ---------- photographic hero ---------- */
+.hero-photo {
+  position: relative;
+  background: var(--black);
+  isolation: isolate;
+}
+.hero-photo::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("img/hero-grenadier.jpg");
+  background-size: cover;
+  background-position: center 38%;
+  z-index: -2;
+}
+.hero-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg,
+      rgba(11,11,12,0.62) 0%,
+      rgba(11,11,12,0.38) 45%,
+      rgba(11,11,12,0.88) 100%);
+  z-index: -1;
+}
+
+/* ---------- booking builder ---------- */
+.chips { display: flex; flex-wrap: wrap; gap: 10px; }
+.chip {
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--silver);
+  background: var(--carbon);
+  border: 1px solid var(--line-dark);
+  border-radius: var(--r);
+  padding: 13px 20px;
+  cursor: pointer;
+  transition: color .15s ease, border-color .15s ease;
+}
+.chip:hover { border-color: var(--chrome-low); color: var(--white); }
+.chip.on {
+  color: #0b0b0c;
+  background: linear-gradient(180deg, #f8f9fb 0%, #e3e5ea 42%, #a6aab2 50%, #ced1d7 58%, #f1f2f5 100%);
+  border-color: #9ba0a8;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.85), inset 0 -1px 0 rgba(0,0,0,0.18);
+}
+.chip[disabled] { opacity: .35; cursor: not-allowed; }
+.build-step { margin-bottom: clamp(30px, 5vw, 44px); }
+.build-step .eyebrow { margin-bottom: 12px; }
+.quote-box {
+  border: 1px solid var(--line-dark);
+  background: var(--carbon);
+  border-radius: var(--r);
+  padding: clamp(26px, 4vw, 40px);
+  position: relative;
+}
+.quote-box::before {
+  content: "";
+  position: absolute;
+  inset: -1px -1px auto -1px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--chrome-hi), transparent);
+}
+.quote-price {
+  font-family: var(--font-display);
+  font-stretch: 118%;
+  font-weight: 860;
+  font-size: clamp(52px, 10vw, 84px);
+  line-height: 1;
+}
+.quote-meta { color: var(--silver); font-size: 14.5px; margin-top: 10px; }

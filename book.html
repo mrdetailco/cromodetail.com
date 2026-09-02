@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0b0b0c">
+<title>Build Your Detail — Cromo Detail Co.</title>
+<meta name="description" content="Pick your service tier and vehicle size, see the exact price, and book by text. Mobile detailing across Orange County.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900&family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="icon-32.png">
+<link rel="apple-touch-icon" href="icon-180.png">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://cromodetail.com/og.png">
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-in">
+    <a class="logo" href="index.html">CROMO&nbsp;DETAIL&nbsp;<span class="co">CO.</span></a>
+    <button class="nav-toggle" aria-expanded="false" aria-controls="nav-links">Menu</button>
+    <nav class="nav-links" id="nav-links">
+      <a href="services.html">Services</a>
+      <a href="process.html">Process</a>
+      <a href="gallery.html">Work</a>
+      <a href="story.html">Story</a>
+      <a href="faq.html">FAQ</a>
+      <a href="book.html" aria-current="page">Book</a>
+      <a class="btn btn-chrome" href="sms:+19492854662">Text us</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <section class="band band--black" style="padding-block: clamp(70px,10vw,110px) clamp(48px,7vw,80px);">
+    <div class="wrap">
+      <p class="eyebrow">Build your detail</p>
+      <h1 class="display chrome" style="font-size:clamp(36px,7.5vw,76px);">Exact price.<br>Before you text.</h1>
+      <p class="lede muted" style="margin-top:20px;">No quote games. Pick your tier and your vehicle — the price you see is the price at your driveway.</p>
+    </div>
+  </section>
+
+  <hr class="rule-chrome">
+
+  <section class="band band--black" style="padding-top: clamp(44px,6vw,64px);">
+    <div class="wrap">
+
+      <div class="build-step">
+        <p class="eyebrow">1 · Service tier</p>
+        <div class="chips" id="tier-chips">
+          <button class="chip on" data-tier="Maintenance">Maintenance</button>
+          <button class="chip" data-tier="Full Detail">Full Detail</button>
+          <button class="chip" data-tier="Premium">Premium</button>
+        </div>
+      </div>
+
+      <div class="build-step">
+        <p class="eyebrow">2 · Vehicle size</p>
+        <div class="chips" id="size-chips">
+          <button class="chip on" data-size="Sedan">Sedan</button>
+          <button class="chip" data-size="SUV">SUV</button>
+          <button class="chip" data-size="Truck &amp; 3-Row">Truck &amp; 3-Row</button>
+          <button class="chip" data-size="XL Truck">XL Truck</button>
+        </div>
+        <p class="muted" style="font-size:14px; margin-top:12px;">Not sure which yours counts as? Text a photo — we'll size it honestly.</p>
+      </div>
+
+      <div class="build-step">
+        <p class="eyebrow">3 · Add-on</p>
+        <div class="chips">
+          <button class="chip" id="ceramic-chip">Ceramic Sealant · +$45</button>
+        </div>
+        <p class="muted" id="ceramic-note" style="font-size:14px; margin-top:12px;">Gtechniq C2v4, layered on after the detail. Available with Full Detail and Premium.</p>
+      </div>
+
+      <div class="quote-box reveal">
+        <p class="eyebrow" style="margin-bottom:8px;">Your detail</p>
+        <div class="quote-price chrome" id="price">$100</div>
+        <p class="quote-meta" id="summary">Maintenance · Sedan</p>
+        <div class="cta-row">
+          <a class="btn btn-chrome" id="book-btn" href="sms:+19492854662">Text this booking</a>
+          <a class="btn btn-ghost-dark" href="services.html">What's included</a>
+        </div>
+        <p class="muted" style="font-size:13px; margin-top:18px; margin-bottom:0;">Tapping opens your Messages app with the booking pre-written — just hit send. Heavily soiled vehicles (pet hair, sand, spills) may be quoted individually first.</p>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-in">
+    <div class="tm">Cromo Detail Co.™ · Orange County, California</div>
+    <div><a href="sms:+19492854662">Text (949) 285-4662</a> · <a href="mailto:rob@cromodetail.com">rob@cromodetail.com</a> · <a href="https://instagram.com/cromodetail" rel="noopener">@cromodetail</a></div>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+<script>
+(function () {
+  const PRICES = {
+    "Maintenance": { "Sedan": 100, "SUV": 115, "Truck & 3-Row": 130, "XL Truck": 150 },
+    "Full Detail": { "Sedan": 200, "SUV": 230, "Truck & 3-Row": 260, "XL Truck": 290 },
+    "Premium":     { "Sedan": 300, "SUV": 340, "Truck & 3-Row": 380, "XL Truck": 420 }
+  };
+  const CERAMIC = 45;
+  let tier = "Maintenance", size = "Sedan", ceramic = false;
+
+  const priceEl = document.getElementById("price");
+  const summaryEl = document.getElementById("summary");
+  const bookBtn = document.getElementById("book-btn");
+  const ceramicChip = document.getElementById("ceramic-chip");
+
+  function pick(groupId, attr, cb) {
+    document.querySelectorAll("#" + groupId + " .chip").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll("#" + groupId + " .chip").forEach(b => b.classList.remove("on"));
+        btn.classList.add("on");
+        cb(btn.dataset[attr]);
+        render();
+      });
+    });
+  }
+
+  pick("tier-chips", "tier", v => {
+    tier = v;
+    if (tier === "Maintenance") { ceramic = false; }
+  });
+  pick("size-chips", "size", v => { size = v; });
+
+  ceramicChip.addEventListener("click", () => {
+    if (tier === "Maintenance") return;
+    ceramic = !ceramic;
+    render();
+  });
+
+  function render() {
+    const allowed = tier !== "Maintenance";
+    ceramicChip.toggleAttribute("disabled", !allowed);
+    ceramicChip.classList.toggle("on", ceramic && allowed);
+
+    const total = PRICES[tier][size] + (ceramic && allowed ? CERAMIC : 0);
+    priceEl.textContent = "$" + total;
+    const parts = [tier, size];
+    if (ceramic && allowed) parts.push("Ceramic Sealant");
+    summaryEl.textContent = parts.join(" · ");
+
+    const msg = "Hi Rob — I'd like to book a " + tier + " for my " + size.toLowerCase() +
+      (ceramic && allowed ? " with the ceramic sealant add-on" : "") +
+      " ($" + total + " on the site). What's your availability?";
+    bookBtn.href = "sms:+19492854662?&body=" + encodeURIComponent(msg);
+  }
+
+  render();
+})();
+</script>
+</body>
+</html>
