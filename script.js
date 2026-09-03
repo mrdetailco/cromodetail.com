@@ -29,3 +29,12 @@ if (reduced || !("IntersectionObserver" in window)) {
   );
   items.forEach(el => io.observe(el));
 }
+
+// Before/after sliders
+document.querySelectorAll(".ba-slider").forEach(sl => {
+  const range = sl.querySelector(".ba-range");
+  if (!range) return;
+  const set = v => sl.style.setProperty("--pos", v + "%");
+  range.addEventListener("input", () => set(range.value));
+  set(range.value);
+});
