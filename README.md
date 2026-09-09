@@ -1,1 +1,0 @@
-# cromodetail.com
