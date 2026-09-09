@@ -622,3 +622,8 @@ p { margin: 0 0 1em; }
 .ba-tag-a { right: 14px; }
 .ba-wrap { display: grid; gap: clamp(24px, 4vw, 44px); grid-template-columns: minmax(0, 560px) 1fr; align-items: center; }
 @media (max-width: 880px) { .ba-wrap { grid-template-columns: 1fr; } }
+
+/* ---------- side-by-side pair cards ---------- */
+.pairs-stack { display: grid; gap: clamp(20px, 3vw, 32px); max-width: 880px; }
+.pair-card { border: 1px solid var(--line-light); border-radius: var(--r); overflow: hidden; }
+.pair-card img { display: block; width: 100%; height: auto; }
