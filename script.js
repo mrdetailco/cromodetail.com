@@ -24,9 +24,15 @@ const items = document.querySelectorAll(".reveal");
 if (reduced || !("IntersectionObserver" in window)) {
   items.forEach(el => el.classList.add("in"));
 } else {
+  const shine = el => {
+    const t = el.classList.contains("chrome") ? el : el.querySelector(".chrome:not(.sheen)");
+    if (t && !t.classList.contains("sheen") && !t.classList.contains("shine-once")) {
+      t.classList.add("shine-once");
+    }
+  };
   const io = new IntersectionObserver(
     entries => entries.forEach(e => {
-      if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+      if (e.isIntersecting) { e.target.classList.add("in"); shine(e.target); io.unobserve(e.target); }
     }),
     { threshold: 0.12, rootMargin: "0px 0px -6% 0px" }
   );
@@ -58,16 +64,4 @@ document.querySelectorAll(".ba-slider").forEach(sl => {
   }));
   lb.addEventListener("click", close);
   document.addEventListener("keydown", e => { if (e.key === "Escape") close(); });
-})();
-
-// One-shot chrome sheen when headlines scroll in
-(function () {
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  const shine = el => {
-    const t = el.classList.contains("chrome") ? el : el.querySelector(".chrome:not(.sheen)");
-    if (t && !t.classList.contains("sheen")) t.classList.add("shine-once");
-  };
-  new MutationObserver(muts => muts.forEach(m => {
-    if (m.target.classList && m.target.classList.contains("in")) shine(m.target);
-  })).observe(document.body, { subtree: true, attributes: true, attributeFilter: ["class"] });
 })();
