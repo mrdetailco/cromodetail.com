@@ -627,3 +627,30 @@ p { margin: 0 0 1em; }
 .pairs-stack { display: grid; gap: clamp(20px, 3vw, 32px); max-width: 880px; }
 .pair-card { border: 1px solid var(--line-light); border-radius: var(--r); overflow: hidden; }
 .pair-card img { display: block; width: 100%; height: auto; }
+
+/* ---------- lightbox ---------- */
+.lb {
+  position: fixed; inset: 0; z-index: 90;
+  background: rgba(8, 8, 9, 0.96);
+  display: none; place-items: center; padding: 4vmin;
+}
+.lb.open { display: grid; }
+.lb img {
+  max-width: 94vw; max-height: 90vh; width: auto; height: auto;
+  border: 1px solid var(--line-dark); border-radius: var(--r);
+  cursor: zoom-out;
+}
+.lb-close {
+  position: fixed; top: 16px; right: 16px;
+  font: 600 12px/1 var(--font-body); letter-spacing: 0.14em; text-transform: uppercase;
+  color: #0b0b0c; padding: 12px 18px; border-radius: var(--r); cursor: pointer;
+  background: linear-gradient(180deg,#f8f9fb 0%,#e3e5ea 42%,#a6aab2 50%,#ced1d7 58%,#f1f2f5 100%);
+  border: 1px solid #9ba0a8;
+}
+.g-slot img, .pair-card img { cursor: zoom-in; }
+
+/* ---------- one-shot sheen on scroll entry ---------- */
+.shine-once { animation: sheen 2.2s ease-out 1; }
+
+/* ---------- app-like page transitions ---------- */
+@view-transition { navigation: auto; }
