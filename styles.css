@@ -388,7 +388,7 @@ p { margin: 0 0 1em; }
   color: var(--slate);
 }
 .price-table td:last-child { text-align: right; font-weight: 600; }
-.tier-block { margin-bottom: clamp(44px, 7vw, 72px); }
+.tier-block { margin-bottom: clamp(44px, 7vw, 72px); scroll-margin-top: 84px; }
 .tier-block > p { color: var(--slate); max-width: 44em; }
 .note {
   font-size: 14px;
@@ -654,3 +654,86 @@ p { margin: 0 0 1em; }
 
 /* ---------- app-like page transitions ---------- */
 @view-transition { navigation: auto; }
+
+/* ---------- footer legal row ---------- */
+.footer-legal { flex-basis: 100%; font-size: 12px; letter-spacing: 0.06em; color: var(--slate); }
+.footer-legal a { color: var(--slate); }
+.footer-legal a:hover { color: var(--white); }
+
+/* ---------- legal pages ---------- */
+.legal { max-width: 42em; }
+.legal .updated { font-size: 13px; letter-spacing: 0.04em; color: var(--slate); margin: 0 0 28px; }
+.legal h2 {
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin: clamp(28px, 4.5vw, 40px) 0 10px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line-light);
+}
+.legal p { color: var(--slate); margin: 0 0 0.9em; }
+.legal a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+
+/* ---------- add-ons table (services) ---------- */
+.price-table .sub {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 400;
+  color: var(--slate);
+  margin-top: 3px;
+}
+.price-table td.from { font-weight: 500; color: var(--slate); white-space: nowrap; }
+.price-table td.from b { font-weight: 600; color: var(--ink); }
+
+/* ---------- add-ons checklist (book) ---------- */
+.addons { display: grid; gap: 8px; max-width: 640px; }
+.addon {
+  display: grid;
+  grid-template-columns: 18px 1fr auto;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  text-align: left;
+  background: var(--carbon);
+  border: 1px solid var(--line-dark);
+  border-radius: var(--r);
+  padding: 14px 16px;
+  color: var(--white);
+  font: 500 15px/1.3 var(--font-body);
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+}
+.addon:hover { border-color: var(--chrome-low); }
+.addon-box {
+  width: 18px; height: 18px;
+  border: 1px solid var(--chrome-low);
+  border-radius: 2px;
+  display: grid; place-items: center;
+}
+.addon.on { border-color: var(--chrome-mid); }
+.addon.on .addon-box {
+  background: linear-gradient(180deg, #f8f9fb 0%, #e3e5ea 45%, #ced1d7 100%);
+  border-color: #9ba0a8;
+}
+.addon.on .addon-box::after {
+  content: "";
+  width: 5px; height: 9px;
+  border: solid #0b0b0c;
+  border-width: 0 2px 2px 0;
+  transform: translateY(-1px) rotate(45deg);
+}
+.addon-sub { display: block; font-size: 12.5px; font-weight: 400; color: var(--silver); margin-top: 3px; }
+.addon-price { font-weight: 600; color: var(--chrome-mid); white-space: nowrap; }
+.addon[disabled] { opacity: 0.45; cursor: not-allowed; }
+.addon[disabled]:hover { border-color: var(--line-dark); }
+.quote-from {
+  font-size: 0.3em;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  vertical-align: middle;
+  margin-right: 0.2em;
+}

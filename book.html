@@ -70,17 +70,52 @@
       </div>
 
       <div class="build-step">
-        <p class="eyebrow">3 · Add-on</p>
-        <div class="chips">
-          <button class="chip" id="ceramic-chip">Ceramic Sealant · +$45</button>
+        <p class="eyebrow">3 · Add-ons <span style="letter-spacing:0.1em; text-transform:none; font-weight:400;">· optional, pick any</span></p>
+        <div class="addons" id="addon-list">
+          <button type="button" class="addon" data-id="clay" aria-pressed="false">
+            <span class="addon-box" aria-hidden="true"></span>
+            <span class="addon-name">Clay bar &amp; sealant<span class="addon-sub" data-sub></span></span>
+            <span class="addon-price">+$50</span>
+          </button>
+          <button type="button" class="addon" data-id="ceramic" aria-pressed="false">
+            <span class="addon-box" aria-hidden="true"></span>
+            <span class="addon-name">Ceramic sealant<span class="addon-sub" data-sub></span></span>
+            <span class="addon-price">+$45</span>
+          </button>
+          <button type="button" class="addon" data-id="engine" aria-pressed="false">
+            <span class="addon-box" aria-hidden="true"></span>
+            <span class="addon-name">Engine bay cleaning<span class="addon-sub" data-sub></span></span>
+            <span class="addon-price">+$50</span>
+          </button>
+          <button type="button" class="addon" data-id="iron" aria-pressed="false">
+            <span class="addon-box" aria-hidden="true"></span>
+            <span class="addon-name">Iron decontamination<span class="addon-sub" data-sub></span></span>
+            <span class="addon-price">+$40</span>
+          </button>
+          <button type="button" class="addon" data-id="headlights" aria-pressed="false">
+            <span class="addon-box" aria-hidden="true"></span>
+            <span class="addon-name">Headlight restoration<span class="addon-sub" data-sub></span></span>
+            <span class="addon-price">+$60</span>
+          </button>
+          <button type="button" class="addon" data-id="pethair" aria-pressed="false">
+            <span class="addon-box" aria-hidden="true"></span>
+            <span class="addon-name">Pet hair removal<span class="addon-sub" data-sub></span></span>
+            <span class="addon-price">from $30</span>
+          </button>
+          <button type="button" class="addon" data-id="stain" aria-pressed="false">
+            <span class="addon-box" aria-hidden="true"></span>
+            <span class="addon-name">Stain &amp; spill treatment<span class="addon-sub" data-sub></span></span>
+            <span class="addon-price">from $40</span>
+          </button>
         </div>
-        <p class="muted" id="ceramic-note" style="font-size:14px; margin-top:12px;">Gtechniq C2v4, layered on after the detail. Available with Full Detail and Premium.</p>
+        <p class="muted" style="font-size:14px; margin-top:12px;">Fixed prices add straight in. "From" prices depend on the car — you'll get the exact number from a photo before anything is booked.</p>
       </div>
 
       <div class="quote-box reveal">
         <p class="eyebrow" style="margin-bottom:8px;">Your detail</p>
         <div class="quote-price chrome" id="price">$100</div>
         <p class="quote-meta" id="summary">Maintenance · Sedan</p>
+        <p class="muted" id="from-note" hidden style="font-size:13.5px; margin:10px 0 0;"></p>
         <div class="cta-row">
           <a class="btn btn-chrome" id="book-btn" href="sms:+19492854662">Text this booking</a>
           <a class="btn btn-ghost-dark" href="services.html">What's included</a>
@@ -97,6 +132,7 @@
   <div class="footer-in">
     <div class="tm">Cromo Detail Co.™ · Orange County, California</div>
     <div><a href="sms:+19492854662">Text (949) 285-4662</a> · <a href="mailto:rob@cromodetail.com">rob@cromodetail.com</a> · <a href="https://instagram.com/cromodetail" rel="noopener">@cromodetail</a></div>
+    <div class="footer-legal"><a href="terms.html">Terms</a> · <a href="privacy.html">Privacy</a></div>
   </div>
 </footer>
 
@@ -108,13 +144,46 @@
     "Full Detail": { "Sedan": 200, "SUV": 230, "Truck & 3-Row": 260, "XL Truck": 290 },
     "Premium":     { "Sedan": 300, "SUV": 340, "Truck & 3-Row": 380, "XL Truck": 420 }
   };
-  const CERAMIC = 45;
-  let tier = "Maintenance", size = "Sedan", ceramic = false;
+
+  // kind: "fixed" adds exactly; "from" adds its minimum and flags the quote.
+  // includedIn: tiers where it's already part of the service (locked, no charge).
+  // requires: tiers it can be added to (locked elsewhere).
+  const ADDONS = {
+    clay:       { name: "clay bar & sealant",     label: "Clay bar & sealant",     price: 50, kind: "fixed", includedIn: ["Premium"],
+                  sub: "Lifts bonded contamination, then seals the paint." },
+    ceramic:    { name: "ceramic sealant",        label: "Ceramic sealant",        price: 45, kind: "fixed", requires: ["Full Detail", "Premium"],
+                  sub: "Gtechniq C2v4, layered on after the detail." },
+    engine:     { name: "engine bay cleaning",    label: "Engine bay cleaning",    price: 50, kind: "fixed",
+                  sub: "Degreased, rinsed safely, and dressed." },
+    iron:       { name: "iron decontamination",   label: "Iron decontamination",   price: 40, kind: "fixed",
+                  sub: "Dissolves embedded brake dust from paint and wheels." },
+    headlights: { name: "headlight restoration",  label: "Headlight restoration",  price: 60, kind: "fixed",
+                  sub: "Per pair. Hazy lenses brought back to clear." },
+    pethair:    { name: "pet hair removal",       label: "Pet hair removal",       price: 30, kind: "from",
+                  sub: "Final price confirmed from a photo." },
+    stain:      { name: "stain & spill treatment", label: "Stain & spill treatment", price: 40, kind: "from",
+                  sub: "Final price confirmed from a photo." }
+  };
+
+  // How each size reads inside the booking text.
+  const SIZE_WORDS = { "Sedan": "sedan", "SUV": "SUV", "Truck & 3-Row": "truck / 3-row", "XL Truck": "XL truck" };
+
+  let tier = "Maintenance", size = "Sedan";
+  const selected = new Set();
 
   const priceEl = document.getElementById("price");
   const summaryEl = document.getElementById("summary");
+  const fromNote = document.getElementById("from-note");
   const bookBtn = document.getElementById("book-btn");
-  const ceramicChip = document.getElementById("ceramic-chip");
+  const addonBtns = Array.from(document.querySelectorAll("#addon-list .addon"));
+
+  // Why an add-on is locked for the current tier, or null if it's available.
+  function lockReason(id) {
+    const a = ADDONS[id];
+    if (a.includedIn && a.includedIn.includes(tier)) return "Included in " + tier + ".";
+    if (a.requires && !a.requires.includes(tier)) return a.requires.join(" & ") + " only.";
+    return null;
+  }
 
   function pick(groupId, attr, cb) {
     document.querySelectorAll("#" + groupId + " .chip").forEach(btn => {
@@ -129,30 +198,64 @@
 
   pick("tier-chips", "tier", v => {
     tier = v;
-    if (tier === "Maintenance") { ceramic = false; }
+    // Drop anything the new tier doesn't allow.
+    selected.forEach(id => { if (lockReason(id)) selected.delete(id); });
   });
   pick("size-chips", "size", v => { size = v; });
 
-  ceramicChip.addEventListener("click", () => {
-    if (tier === "Maintenance") return;
-    ceramic = !ceramic;
-    render();
+  addonBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const id = btn.dataset.id;
+      if (lockReason(id)) return;
+      if (selected.has(id)) selected.delete(id); else selected.add(id);
+      render();
+    });
   });
 
+  function listWords(items) {
+    if (items.length <= 1) return items.join("");
+    if (items.length === 2) return items[0] + " and " + items[1];
+    return items.slice(0, -1).join(", ") + ", and " + items[items.length - 1];
+  }
+
   function render() {
-    const allowed = tier !== "Maintenance";
-    ceramicChip.toggleAttribute("disabled", !allowed);
-    ceramicChip.classList.toggle("on", ceramic && allowed);
+    // Add-on buttons: lock state, checked state, helper text.
+    addonBtns.forEach(btn => {
+      const id = btn.dataset.id;
+      const a = ADDONS[id];
+      const reason = lockReason(id);
+      const on = selected.has(id) && !reason;
+      btn.toggleAttribute("disabled", !!reason);
+      btn.classList.toggle("on", on);
+      btn.setAttribute("aria-pressed", on ? "true" : "false");
+      btn.querySelector("[data-sub]").textContent = reason || a.sub;
+    });
 
-    const total = PRICES[tier][size] + (ceramic && allowed ? CERAMIC : 0);
-    priceEl.textContent = "$" + total;
-    const parts = [tier, size];
-    if (ceramic && allowed) parts.push("Ceramic Sealant");
-    summaryEl.textContent = parts.join(" · ");
+    // Totals.
+    const chosen = Object.keys(ADDONS).filter(id => selected.has(id));
+    const fromItems = chosen.filter(id => ADDONS[id].kind === "from");
+    const total = PRICES[tier][size] + chosen.reduce((sum, id) => sum + ADDONS[id].price, 0);
+    const hasFrom = fromItems.length > 0;
 
-    const msg = "Hi Rob — I'd like to book a " + tier + " for my " + size.toLowerCase() +
-      (ceramic && allowed ? " with the ceramic sealant add-on" : "") +
-      " ($" + total + " on the site). What's your availability?";
+    priceEl.innerHTML = (hasFrom ? '<span class="quote-from">from </span>' : "") + "$" + total;
+
+    summaryEl.textContent = [tier, size].concat(chosen.map(id => ADDONS[id].label)).join(" · ");
+
+    if (hasFrom) {
+      const names = listWords(fromItems.map(id => ADDONS[id].name));
+      fromNote.textContent = "Shown at the minimum for " + names + " — the exact price is confirmed from a photo before anything is booked.";
+      fromNote.hidden = false;
+    } else {
+      fromNote.hidden = true;
+    }
+
+    // Pre-written booking text.
+    let msg = "Hi Rob — I'd like to book a " + tier + " for my " + (SIZE_WORDS[size] || size.toLowerCase());
+    if (chosen.length) msg += " with " + listWords(chosen.map(id => ADDONS[id].name));
+    msg += hasFrom
+      ? " (from $" + total + " on the site — I'll send a photo for the " + listWords(fromItems.map(id => ADDONS[id].name)) + ")."
+      : " ($" + total + " on the site).";
+    msg += " What's your availability?";
     bookBtn.href = "sms:+19492854662?&body=" + encodeURIComponent(msg);
   }
 
